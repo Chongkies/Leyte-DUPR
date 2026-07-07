@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leyte Pickleball - Public Player Directory</title>
+    <link rel="icon" type="image/png" href="https://www.vecteezy.com/png/51766613-pickleball-green-icon-logo">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="pickleball-green-icon-logo-free-png.png" id="logo" alt="Leyte Pickleball">
+                <h1>Leyte Pickleball Player Directory</h1>
+            </div>
+            <div class="header-actions">
+                <button onclick="window.location.href='assessment.html'" class="committee-btn">Committee Access</button>
+                
+                <!-- Sign-Up Dropdown -->
+                <div id="signupDropdown" class="dropdown">
+                    <button id="signupDropdownBtn" class="committee-btn dropdown-toggle" style="background: linear-gradient(135deg, #85bb2f, #6a9e38);">
+                        Sign-Up <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div id="signupDropdownMenu" class="dropdown-menu">
+                        <a href="#" onclick="handleCommitteeSignup()" class="dropdown-item">
+                            <span class="dropdown-text">Sign-up as Committee</span>
+                        </a>
+                        <a href="#" onclick="handlePublicSignup()" class="dropdown-item">
+                            <span class="dropdown-text">Sign-up as Public</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Glassmorphism Filter Bar -->
+    <div class="filter-section">
+        <div class="filter-glass">
+            <input type="text" id="searchBar" placeholder="Search players or courts...">
+            <select id="locationFilter" onchange="handleLocationChange()">
+                <option value="All">All Locations</option>
+                <option value="Abuyog">Abuyog</option>
+                <option value="Alangalbig">Alangalbig</option>
+                <option value="Albuera">Albuera</option>
+                <option value="Bato">Bato</option>
+                <option value="Baybay City">Baybay City</option>
+                <option value="Burauen">Burauen</option>
+                <option value="Calubian">Calubian</option>
+                <option value="Capoocan">Capoocan</option>
+                <option value="Carigara">Carigara</option>
+                <option value="Dagami">Dagami</option>
+                <option value="Dulag">Dulag</option>
+                <option value="Hilongos">Hilongos</option>
+                <option value="Hindang">Hindang</option>
+                <option value="Inopacan">Inopacan</option>
+                <option value="Isabel">Isabel</option>
+                <option value="Jaro">Jaro</option>
+                <option value="Javier">Javier</option>
+                <option value="Julita">Julita</option>
+                <option value="Kananga">Kananga</option>
+                <option value="La Paz">La Paz</option>
+                <option value="Leyte">Leyte</option>
+                <option value="MacArthur">MacArthur</option>
+                <option value="Matalom">Matalom</option>
+                <option value="Matag-ob">Matag-ob</option>
+                <option value="Mayorga">Mayorga</option>
+                <option value="Merida">Merida</option>
+                <option value="Ormoc City">Ormoc City</option>
+                <option value="Palompon">Palompon</option>
+                <option value="Pastrana">Pastrana</option>
+                <option value="San Isidro">San Isidro</option>
+                <option value="San Miguel">San Miguel</option>
+                <option value="Santa Fe">Santa Fe</option>
+                <option value="Tabango">Tabango</option>
+                <option value="Tabontabon">Tabontabon</option>
+                <option value="Tacloban City">Tacloban City</option>
+                <option value="Tolosa">Tolosa</option>
+                <option value="Tunga">Tunga</option>
+                <option value="Villaba">Villaba</option>
+            </select>
+            <select id="courtFilter">
+                <option value="All">All Courts</option>
+                <!-- Courts will be loaded dynamically here -->
+            </select>
+            <select id="categoryFilter">
+                <option value="All">All Categories</option>
+                <option value="Novice">Novice (1.0-2.499)</option>
+                <option value="Beginner">Beginner (2.5-2.999)</option>
+                <option value="Advanced Beginner">Advanced Beginner (3.0-3.499)</option>
+                <option value="Low Intermediate">Low Intermediate (3.5-3.999)</option>
+                <option value="High Intermediate">High Intermediate (4.0-4.499)</option>
+                <option value="Advanced">Advanced (4.5-4.999)</option>
+                <option value="Expert">Expert (5.0-5.499)</option>
+                <option value="Expert Pro">Expert Pro (5.5+)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-card">
+                <h2>Welcome to Leyte Pickleball Player Directory</h2>
+                <p>Explore our comprehensive database of skilled pickleball players across Leyte. View player ratings, search by location, and provide community feedback on assessments.</p>
+                <div class="welcome-stats">
+                    <div class="welcome-stat">
+                        <span class="stat-number" id="totalPlayers">0</span>
+                        <span class="stat-label">Total Players</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="stat-number" id="avgRating">0.00</span>
+                        <span class="stat-label">Average Rating</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="stat-number" id="activeLocations">0</span>
+                        <span class="stat-label">Active Locations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Player List -->
+        <div id="playerList">
+            <!-- Loading Skeletons -->
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal">
+        <div class="modal-content">
+            <h3>Player Assessment Feedback</h3>
+            <div class="player-info-modal">
+                <h4 id="feedbackPlayerName">Player Name</h4>
+                <div class="rating-display-modal">
+                    <span class="rating-badge" id="feedbackRating">0.00</span>
+                    <div class="rating-level" id="feedbackLevel">Beginner</div>
+                </div>
+            </div>
+            <div class="feedback-question">
+                <p>Do you agree with this assessment rating?</p>
+                <div class="feedback-options">
+                    <button class="agree-btn" onclick="submitFeedback('agree')">👍 Agree</button>
+                    <button class="disagree-btn" onclick="submitFeedback('disagree')">👎 Disagree</button>
+                </div>
+            </div>
+            <div class="feedback-stats">
+                <div class="feedback-stat">
+                    <span class="agree-count" id="agreeCount">0</span>
+                    <span>Agree</span>
+                </div>
+                <div class="feedback-stat">
+                    <span class="disagree-count" id="disagreeCount">0</span>
+                    <span>Disagree</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="secondary" onclick="closeFeedbackModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Logo Slider -->
+    <footer>
+        <div class="logo-slider-container">
+            <div class="logo-slider">
+                <div class="logo-track">
+                    <img src="PICS/519925601_3788356848123165_8234671812831684506_n.jpg" alt="Partner Logo 1" class="footer-logo">
+                    <img src="PICS/562411173_122115546560996110_44709083046211389_n.jpg" alt="Partner Logo 2" class="footer-logo">
+                    <img src="PICS/610846213_122102201925191097_8657497127870389321_n.png" alt="Partner Logo 3" class="footer-logo">
+                    <img src="PICS/616226758_122103073461215831_3738157836561247466_n.jpg" alt="Partner Logo 4" class="footer-logo">
+                    <img src="PICS/LOGO-SYPIK-2024-1.png" alt="SYPIK Logo" class="footer-logo">
+                    <img src="PICS/ScreenShot2024-05-16at5.33.10PM.png" alt="Event Logo" class="footer-logo">
+                    <img src="PICS/USA-Pickleball_Logo_300.png" alt="USA Pickleball Logo" class="footer-logo">
+                    <img src="PICS/alibaba-com-logo-png_seeklogo-6545.png" alt="Alibaba Logo" class="footer-logo">
+                    <img src="PICS/image-2000x2000_2000x.png" alt="Partner Logo 5" class="footer-logo">
+                    <img src="PICS/images.png" alt="Partner Logo 6" class="footer-logo">
+                    <img src="PICS/uylC36HA676a037ee58ea_1735000958_420x420.png" alt="Partner Logo 7" class="footer-logo">
+                    <!-- Duplicate logos for seamless loop -->
+                    <img src="PICS/519925601_3788356848123165_8234671812831684506_n.jpg" alt="Partner Logo 1" class="footer-logo">
+                    <img src="PICS/562411173_122115546560996110_44709083046211389_n.jpg" alt="Partner Logo 2" class="footer-logo">
+                    <img src="PICS/610846213_122102201925191097_8657497127870389321_n.png" alt="Partner Logo 3" class="footer-logo">
+                    <img src="PICS/616226758_122103073461215831_3738157836561247466_n.jpg" alt="Partner Logo 4" class="footer-logo">
+                    <img src="PICS/LOGO-SYPIK-2024-1.png" alt="SYPIK Logo" class="footer-logo">
+                    <img src="PICS/ScreenShot2024-05-16at5.33.10PM.png" alt="Event Logo" class="footer-logo">
+                    <img src="PICS/USA-Pickleball_Logo_300.png" alt="USA Pickleball Logo" class="footer-logo">
+                    <img src="PICS/alibaba-com-logo-png_seeklogo-6545.png" alt="Alibaba Logo" class="footer-logo">
+                    <img src="PICS/image-2000x2000_2000x.png" alt="Partner Logo 5" class="footer-logo">
+                    <img src="PICS/images.png" alt="Partner Logo 6" class="footer-logo">
+                    <img src="PICS/uylC36HA676a037ee58ea_1735000958_420x420.png" alt="Partner Logo 7" class="footer-logo">
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Leyte Pickleball Directory System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="home.js"></script>
+</body>
+</html>

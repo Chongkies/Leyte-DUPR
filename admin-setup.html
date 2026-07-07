@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Setup - Leyte DUPR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="assets/logo.png" alt="Leyte DUPR Logo" id="logo">
+                <h1>🔐 Admin Setup</h1>
+            </div>
+            <div class="header-actions">
+                <button onclick="window.location.href='assessment.html'" class="committee-btn">📝 Assessment</button>
+                <button onclick="window.location.href='index.html'" class="committee-btn">🏠 Home</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="admin-setup-section">
+            <h2 style="text-align: center; color: var(--deep-court-green); margin-bottom: 30px; font-size: 2rem;">👑 Admin Account Setup</h2>
+            
+            <!-- Admin Login Section -->
+            <div class="login-card" style="max-width: 600px; margin: 0 auto 40px;">
+                <h3 style="text-align: center; color: var(--deep-court-green); margin-bottom: 20px;">🔐 Step 1: Login with Admin Account</h3>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 20px;">Login with the account you want to set as admin</p>
+                
+                <div id="loginForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Admin Email</label>
+                        <input type="email" id="adminEmail" placeholder="Enter admin email" style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter password" style="width: 100%; padding: 12px; border: 2px solid var(--gray-light); border-radius: 8px;">
+                    </div>
+                    <button onclick="adminLogin()" class="primary" style="width: 100%; padding: 15px; margin-top: 20px;">🔐 Login as Admin</button>
+                </div>
+                
+                <div id="loggedInInfo" style="display: none; text-align: center; padding: 20px; background: #e8f5e9; border-radius: 8px;">
+                    <h4 style="color: var(--primary-green); margin-bottom: 10px;">✅ Logged in as:</h4>
+                    <p id="loggedInEmail" style="font-weight: 600; color: var(--text-primary);"></p>
+                    <button onclick="logout()" class="secondary" style="margin-top: 15px;">🚪 Logout</button>
+                </div>
+            </div>
+
+            <!-- Admin Setup Section -->
+            <div id="adminSetupSection" style="display: none;">
+                <div class="setup-card" style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; padding: 30px; box-shadow: var(--shadow-lg);">
+                    <h3 style="text-align: center; color: var(--deep-court-green); margin-bottom: 20px;">👑 Step 2: Grant Admin Privileges</h3>
+                    
+                    <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                        <h4 style="color: #856404; margin-bottom: 10px;">⚠️ Important:</h4>
+                        <p style="color: #856404; margin: 0;">This will grant full admin access to the logged-in account. Admin accounts can:</p>
+                        <ul style="color: #856404; margin: 10px 0 0 20px;">
+                            <li>Approve/reject committee members</li>
+                            <li>Manage all committee accounts</li>
+                            <li>Conduct player assessments</li>
+                            <li>Access all system features</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <button onclick="grantAdminAccess()" class="primary" style="padding: 15px 30px; font-size: 1.1rem; background: linear-gradient(135deg, #ff6b6b, #ff5252);">
+                            👑 Grant Admin Access to Current Account
+                        </button>
+                    </div>
+                    
+                    <div id="setupResult" style="display: none; margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Current Admins Section -->
+            <div id="currentAdminsSection" style="display: none;">
+                <div class="admins-card" style="max-width: 600px; margin: 40px auto; background: white; border-radius: 12px; padding: 30px; box-shadow: var(--shadow-lg);">
+                    <h3 style="text-align: center; color: var(--deep-court-green); margin-bottom: 20px;">👥 Current Admin Accounts</h3>
+                    <div id="adminsList" style="margin: 20px 0;"></div>
+                    <button onclick="loadAdmins()" class="secondary" style="width: 100%;">🔄 Refresh Admin List</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+    
+    <!-- Admin Setup JS -->
+    <script type="module" src="admin-setup.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Court - Leyte Pickleball</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="add-court.js"></script>
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header class="form-page-header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="pickleball-green-icon-logo-free-png.png" id="logo" alt="Leyte Pickleball">
+                <h1>Add New Court</h1>
+            </div>
+            <div class="header-actions">
+                <button onclick="window.location.href='assessment.html'">← Back to Assessment</button>
+                <button onclick="window.location.href='index.html'">🏠 Home</button>
+                <button id="logoutBtn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="form-card">
+            <h2>➕ Add New Pickleball Court</h2>
+            <p>Fill in the details below to add a new court location to the system.</p>
+            
+            <form id="addCourtForm" style="display: flex; flex-direction: column; gap: 20px; margin-top: 30px;">
+                <div class="form-group">
+                    <label for="courtName">Court Name *</label>
+                    <input type="text" id="courtName" name="courtName" placeholder="e.g., Leyte Sports Complex Court 1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="municipality">Municipality/City *</label>
+                    <select id="municipality" name="municipality" required>
+                        <option value="">Select Municipality/City</option>
+                        <option value="Abuyog">Abuyog</option>
+                        <option value="Alangalbig">Alangalbig</option>
+                        <option value="Albuera">Albuera</option>
+                        <option value="Bato">Bato</option>
+                        <option value="Baybay City">Baybay City</option>
+                        <option value="Burauen">Burauen</option>
+                        <option value="Capoocan">Capoocan</option>
+                        <option value="Carigara">Carigara</option>
+                        <option value="Dagami">Dagami</option>
+                        <option value="Dulag">Dulag</option>
+                        <option value="Hilongos">Hilongos</option>
+                        <option value="Hindang">Hindang</option>
+                        <option value="Inopacan">Inopacan</option>
+                        <option value="Isabel">Isabel</option>
+                        <option value="Jaro">Jaro</option>
+                        <option value="Javier">Javier</option>
+                        <option value="Julita">Julita</option>
+                        <option value="Kananga">Kananga</option>
+                        <option value="La Paz">La Paz</option>
+                        <option value="Leyte">Leyte</option>
+                        <option value="MacArthur">MacArthur</option>
+                        <option value="Mahaplag">Mahaplag</option>
+                        <option value="Matag-ob">Matag-ob</option>
+                        <option value="Matalom">Matalom</option>
+                        <option value="Mayorga">Mayorga</option>
+                        <option value="Merida">Merida</option>
+                        <option value="Ormoc City">Ormoc City</option>
+                        <option value="Palompon">Palompon</option>
+                        <option value="Pastrana">Pastrana</option>
+                        <option value="San Isidro">San Isidro</option>
+                        <option value="San Miguel">San Miguel</option>
+                        <option value="Santa Fe">Santa Fe</option>
+                        <option value="Tabango">Tabango</option>
+                        <option value="Tabontabon">Tabontabon</option>
+                        <option value="Tacloban City">Tacloban City</option>
+                        <option value="Tolosa">Tolosa</option>
+                        <option value="Tunga">Tunga</option>
+                        <option value="Villaba">Villaba</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='assessment.html'" class="secondary">Cancel</button>
+                    <button type="submit" class="primary">➕ Add Court</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

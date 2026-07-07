@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leyte Pickleball Ratings - Professional Skill Assessment</title>
+    <link rel="icon" type="image/png" href="https://www.vecteezy.com/png/51766613-pickleball-green-icon-logo">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Loading Spinner Styles */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-toggle {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dropdown-arrow {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-width: 220px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+        
+        .dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .dropdown-item:first-child {
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .dropdown-item:last-child {
+            border-radius: 0 0 10px 10px;
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(69, 160, 73, 0.1));
+            color: var(--primary-green);
+            transform: translateX(5px);
+        }
+        
+        .dropdown-icon {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dropdown-text {
+            flex: 1;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                min-width: 200px;
+                right: -10px;
+            }
+            
+            .dropdown-item {
+                padding: 10px 14px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* Mode Selection Styles */
+        .mode-selection {
+            padding: 40px 20px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .mode-card {
+            text-align: left;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .mode-card:hover .mode-arrow {
+            transform: translateX(10px);
+        }
+        
+        .mode-icon {
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        
+        .mode-card:hover .mode-icon {
+            transform: scale(1.1);
+        }
+        
+        .mode-arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        
+        .mode-header {
+            margin-bottom: 30px;
+        }
+        
+        .back-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            color: var(--primary-green);
+            transform: translateX(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .mode-selection {
+                padding: 20px 15px;
+            }
+            
+            .mode-buttons {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            
+            .mode-card {
+                padding: 30px 20px !important;
+            }
+            
+            .mode-icon {
+                font-size: 2.5rem !important;
+            }
+        }
+    </style>
+    <script type="module" src="assessment.js"></script>
+</head>
+<body>
+    <header>
+            <div class="header-left">
+                <img src="pickleball-green-icon-logo-free-png.png" id="logo" alt="Leyte Pickleball">
+                <h1>Leyte Pickleball Skill Assessment</h1>
+            </div>
+            <div class="header-right">
+                <button id="adminSetupBtn" onclick="window.location.href='admin-setup.html'" class="committee-btn">Admin Setup</button>
+                
+                <!-- Management Dropdown -->
+                <div class="dropdown">
+                    <button id="managementDropdownBtn" class="committee-btn dropdown-toggle">
+                        Management <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div id="managementDropdown" class="dropdown-menu">
+                        <a href="committee-management.html" class="dropdown-item">
+                            <span class="dropdown-text">Committee Management</span>
+                        </a>
+                        <a href="court-management.html" class="dropdown-item">
+                            <span class="dropdown-text">Court Management</span>
+                        </a>
+                        <a href="players.html" class="dropdown-item">
+                            <span class="dropdown-text">Player Management</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <button id="homeBtn" onclick="window.location.href='index.html'" class="committee-btn">Home</button>
+                <button id="logoutBtn" onclick="logout()" class="committee-btn">Logout</button>
+            </div>
+        </header>
+    <div class="main-container">
+        
+
+    <!-- Glassmorphism Filter Bar -->
+    <div id="filterSection" class="filter-section">
+        <div class="filter-glass">
+            <div class="filter-info">
+                <span>🔒 Committee Access Required</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Login Required Section -->
+        <div id="loginRequired" class="login-required">
+            <div class="login-card">
+                <h2>🔒 Committee Access Required</h2>
+                <p>Please log in to access official assessment form.</p>
+                
+                <!-- Inline Login Form -->
+                <div id="inlineLoginForm" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                    <input type="email" id="loginEmail" placeholder="Committee Email" style="padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <input type="password" id="loginPassword" placeholder="Password" style="padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="window.performLogin()" class="login-btn" style="flex: 1;">🔐 Login</button>
+                        <button onclick="window.location.href='index.html'" class="secondary" style="flex: 1; padding: 12px; background: #f5f5f5; border: 2px solid #e0e0e0; border-radius: 8px;">← Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel (Hidden until login) -->
+        <div id="adminPanel" style="display: none;">
+            <!-- Mode Selection Section -->
+            <div id="modeSelection" class="mode-selection">
+                <div class="mode-selection-header">
+                    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--text-primary); text-align: center; margin-bottom: 20px;">🏓 Choose Action</h2>
+                    <p style="text-align: center; color: var(--text-secondary); font-family: 'Inter', sans-serif; margin-bottom: 40px;">Select what you'd like to do today</p>
+                </div>
+                
+                <div class="mode-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 800px; margin: 0 auto;">
+                    <!-- Assess Player Button -->
+                    <button onclick="showAssessmentMode()" class="mode-card" style="background: linear-gradient(135deg, rgba(133, 187, 47, 0.1), rgba(133, 187, 47, 0.05)); border: 2px solid var(--primary-green); border-radius: 20px; padding: 40px 30px; cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif;">
+                        <div class="mode-icon" style="font-size: 3rem; margin-bottom: 20px;">📝</div>
+                        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--primary-green); margin-bottom: 15px;">Assess Player</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">Evaluate player skills, add achievements, and update ratings based on performance criteria</p>
+                        <div class="mode-arrow" style="margin-top: 20px; color: var(--primary-green); font-size: 1.2rem;">→</div>
+                    </button>
+                    
+                    <!-- Record Match Button -->
+                    <button onclick="window.location.href='match-recording.html'" class="mode-card" style="background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(33, 150, 243, 0.05)); border: 2px solid #2196f3; border-radius: 20px; padding: 40px 30px; cursor: pointer; transition: all 0.3s ease; font-family: 'Inter', sans-serif;">
+                        <div class="mode-icon" style="font-size: 3rem; margin-bottom: 20px;">🏆</div>
+                        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: #2196f3; margin-bottom: 15px;">Record Match</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">Record match results, update dynamic ratings, and track player performance</p>
+                        <div class="mode-arrow" style="margin-top: 20px; color: #2196f3; font-size: 1.2rem;">→</div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Assessment Mode (Hidden by default) -->
+            <div id="assessmentMode" style="display: none;">
+                <div class="mode-header">
+                    <button onclick="showModeSelection()" class="back-btn" style="background: none; border: none; color: var(--text-secondary); font-size: 1rem; cursor: pointer; margin-bottom: 20px; font-family: 'Inter', sans-serif;">
+                        ← Back to Selection
+                    </button>
+                    <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--primary-green); text-align: center; margin-bottom: 20px;">📝 Player Assessment</h2>
+                </div>
+                
+                <form id="assessmentForm" onsubmit="saveAssessment(event)">
+                    <div class="assessment-form">
+                        <!-- Hidden input for edit mode -->
+                        <input type="hidden" id="editId">
+                        
+                        <!-- Player Information Section -->
+                        <div class="form-section">
+                        <h3>Player Information</h3>
+                        <input type="hidden" id="editId">
+                        <input type="text" id="pName" placeholder="Player Full Name (Required)">
+                        
+                        <label for="pAddress" class="form-label">Municipality Address</label>
+                        <select id="pAddress" class="form-select">
+                            <option value="" disabled selected>Select Municipality Address</option>
+                            <option value="tacloban">Tacloban City</option>
+                            <option value="abuyog">Abuyog</option>
+                            <option value="alangalang">Alangalang</option>
+                            <option value="albuera">Albuera</option>
+                            <option value="babatngon">Babatngon</option>
+                            <option value="barugo">Barugo</option>
+                            <option value="bato">Bato</option>
+                            <option value="burauen">Burauen</option>
+                            <option value="calubian">Calubian</option>
+                            <option value="capoocan">Capoocan</option>
+                            <option value="carigara">Carigara</option>
+                            <option value="dagami">Dagami</option>
+                            <option value="dulag">Dulag</option>
+                            <option value="hilongos">Hilongos</option>
+                            <option value="hindang">Hindang</option>
+                            <option value="inopacan">Inopacan</option>
+                            <option value="isabel">Isabel</option>
+                            <option value="jaro">Jaro</option>
+                            <option value="javier">Javier</option>
+                            <option value="julita">Julita</option>
+                            <option value="kananga">Kananga</option>
+                            <option value="la-paz">La Paz</option>
+                            <option value="leyte">Leyte</option>
+                            <option value="macarthur">MacArthur</option>
+                            <option value="matalom">Matalom</option>
+                            <option value="matag-ob">Matag-ob</option>
+                            <option value="mayorga">Mayorga</option>
+                            <option value="merida">Merida</option>
+                            <option value="ormoc-city">Ormoc City</option>
+                            <option value="palompon">Palompon</option>
+                            <option value="pastrana">Pastrana</option>
+                            <option value="san-isidro">San Isidro</option>
+                            <option value="san-miguel">San Miguel</option>
+                            <option value="santa-fe">Santa Fe</option>
+                            <option value="tabango">Tabango</option>
+                            <option value="tabontabon">Tabontabon</option>
+                            <option value="tacloban">Tacloban City</option>
+                            <option value="tolosa">Tolosa</option>
+                            <option value="tunga">Tunga</option>
+                            <option value="villaba">Villaba</option>
+                        </select>
+                    
+                    <label for="pCourt" class="form-label">Court Location</label>
+                    <select id="pCourt" class="form-select" onchange="handleCourtSelection()">
+                        <option value="" disabled selected>Select Court Location</option>
+                        <!-- Courts will be loaded dynamically here -->
+                    </select>
+                    
+                    <!-- New Court Registration Section (Hidden by default) -->
+                    <div id="newCourtSection" style="display: none; margin-top: 15px;">
+                        <div class="form-group">
+                            <label for="newCourtName" class="form-label">New Court Name *</label>
+                            <input type="text" id="newCourtName" class="form-input" placeholder="Enter court name">
+                        </div>
+                        <div class="form-group">
+                            <label for="newCourtAddress" class="form-label">Court Address *</label>
+                            <input type="text" id="newCourtAddress" class="form-input" placeholder="Enter court address">
+                        </div>
+                        <div class="form-group">
+                            <label for="newCourtMunicipality" class="form-label">Municipality *</label>
+                            <select id="newCourtMunicipality" class="form-select">
+                                <option value="" disabled selected>Select Municipality</option>
+                                <option value="Abuyog">Abuyog</option>
+                                <option value="Alangalbig">Alangalbig</option>
+                                <option value="Albuera">Albuera</option>
+                                <option value="Bato">Bato</option>
+                                <option value="Baybay City">Baybay City</option>
+                                <option value="Burauen">Burauen</option>
+                                <option value="Calubian">Calubian</option>
+                                <option value="Capoocan">Capoocan</option>
+                                <option value="Carigara">Carigara</option>
+                                <option value="Dagami">Dagami</option>
+                                <option value="Dulag">Dulag</option>
+                                <option value="Hilongos">Hilongos</option>
+                                <option value="Hindang">Hindang</option>
+                                <option value="Inopacan">Inopacan</option>
+                                <option value="Jaro">Jaro</option>
+                                <option value="Javier">Javier</option>
+                                <option value="Julita">Julita</option>
+                                <option value="Kananga">Kananga</option>
+                                <option value="La Paz">La Paz</option>
+                                <option value="Leyte">Leyte</option>
+                                <option value="MacArthur">MacArthur</option>
+                                <option value="Matag-ob">Matag-ob</option>
+                                <option value="Matalom">Matalom</option>
+                                <option value="Mayorga">Mayorga</option>
+                                <option value="Merida">Merida</option>
+                                <option value="Palo">Palo</option>
+                                <option value="Palompon">Palompon</option>
+                                <option value="Pastrana">Pastrana</option>
+                                <option value="San Isidro">San Isidro</option>
+                                <option value="San Miguel">San Miguel</option>
+                                <option value="Santa Fe">Santa Fe</option>
+                                <option value="Tabango">Tabango</option>
+                                <option value="Tabontabon">Tabontabon</option>
+                                <option value="Tacloban City">Tacloban City</option>
+                                <option value="Tolosa">Tolosa</option>
+                                <option value="Tunga">Tunga</option>
+                                <option value="Villaba">Villaba</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newCourtType" class="form-label">Court Type *</label>
+                            <select id="newCourtType" class="form-select">
+                                <option value="" disabled selected>Select Court Type</option>
+                                <option value="indoor">Indoor</option>
+                                <option value="outdoor">Outdoor</option>
+                                <option value="both">Both Indoor & Outdoor</option>
+                            </select>
+                        </div>
+                        <div class="form-actions" style="margin-top: 15px;">
+                            <button type="button" onclick="submitNewCourt()" class="committee-btn primary" style="padding: 10px 20px; font-size: 0.9rem;">📝 Submit for Approval</button>
+                            <button type="button" onclick="cancelNewCourt()" class="committee-btn secondary" style="padding: 10px 20px; font-size: 0.9rem;">✖ Cancel</button>
+                        </div>
+                    </div>
+                <!-- Rating Criteria Section -->
+                <div class="form-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>Skill Assessment Criteria</h3>
+                        <button type="button" id="updateInfoBtn" class="info-btn" onclick="updatePlayerInfoOnly()" style="display: none;">📍 Update Player Info Only</button>
+                    </div>
+                    <div class="rating-grid">
+                        
+                        <!-- 1. Forehand -->
+                        <div class="criteria-group">
+                            <h4>1. Forehand</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="forehand1" name="forehand" value="1">
+                                    <label for="forehand1">1 - Basic
+                                        <span class="tooltip">Learning basic forehand mechanics, inconsistent execution, limited power and control</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="forehand2" name="forehand" value="2">
+                                    <label for="forehand2">2 - Developing
+                                        <span class="tooltip">Can execute basic forehands with some consistency, developing power and placement</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="forehand3" name="forehand" value="3">
+                                    <label for="forehand3">3 - Consistent
+                                        <span class="tooltip">Reliable forehand with good control, can vary pace and placement effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="forehand4" name="forehand" value="4">
+                                    <label for="forehand4">4 - Advanced
+                                        <span class="tooltip">Strong, accurate forehand with variety of shots, can attack and defend effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="forehand5" name="forehand" value="5">
+                                    <label for="forehand5">5 - Elite
+                                        <span class="tooltip">Weapon-level forehand with exceptional power, precision, and shot selection</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Backhand -->
+                        <div class="criteria-group">
+                            <h4>2. Backhand</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="backhand1" name="backhand" value="1">
+                                    <label for="backhand1">1 - Avoids
+                                        <span class="tooltip">Rarely uses backhand, struggles with basic mechanics, avoids backhand shots</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="backhand2" name="backhand" value="2">
+                                    <label for="backhand2">2 - Learning
+                                        <span class="tooltip">Developing backhand mechanics, can execute basic shots with limited consistency</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="backhand3" name="backhand" value="3">
+                                    <label for="backhand3">3 - Reliable
+                                        <span class="tooltip">Consistent backhand with good control, can handle various shot types effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="backhand4" name="backhand" value="4">
+                                    <label for="backhand4">4 - Strong
+                                        <span class="tooltip">Powerful backhand with accuracy, can use both one-handed and two-handed effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="backhand5" name="backhand" value="5">
+                                    <label for="backhand5">5 - Weapon
+                                        <span class="tooltip">Elite backhand that's as strong or stronger than forehand, can win points consistently</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Serve & Return -->
+                        <div class="criteria-group">
+                            <h4>3. Serve & Return</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="serve1" name="serve" value="1">
+                                    <label for="serve1">1 - Inconsistent
+                                        <span class="tooltip">Unreliable serve and return, double faults common, struggles with placement</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="serve2" name="serve" value="2">
+                                    <label for="serve2">2 - Basic
+                                        <span class="tooltip">Can execute basic serves consistently, developing return skills, limited variety</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="serve3" name="serve" value="3">
+                                    <label for="serve3">3 - Varied
+                                        <span class="tooltip">Consistent serves with good placement, reliable returns, developing spin and pace</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="serve4" name="serve" value="4">
+                                    <label for="serve4">4 - Powerful
+                                        <span class="tooltip">Strong serves with variety, aggressive returns, can attack weak serves effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="serve5" name="serve" value="5">
+                                    <label for="serve5">5 - Strategic
+                                        <span class="tooltip">Elite serving with precision, spin, and placement, can exploit opponent weaknesses</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Dinking -->
+                        <div class="criteria-group">
+                            <h4>4. Dinking</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="dink1" name="dink" value="1">
+                                    <label for="dink1">1 - Rally Only
+                                        <span class="tooltip">Can only hit basic dinks in rally situations, struggles with control and placement</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="dink2" name="dink" value="2">
+                                    <label for="dink2">2 - Limited
+                                        <span class="tooltip">Developing dink skills, can execute basic shots but limited variety and control</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="dink3" name="dink" value="3">
+                                    <label for="dink3">3 - Patient
+                                        <span class="tooltip">Consistent dinks with good control, can sustain dink rallies effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="dink4" name="dink" value="4">
+                                    <label for="dink4">4 - Offensive
+                                        <span class="tooltip">Can use dinks offensively, creates opportunities with placement and pace variation</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="dink5" name="dink" value="5">
+                                    <label for="dink5">5 - Master
+                                        <span class="tooltip">Elite dinking with exceptional control, can dictate play and win dink battles</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5. Third Shot -->
+                        <div class="criteria-group">
+                            <h4>5. Third Shot (Drop/Drive)</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="drop1" name="drop" value="1">
+                                    <label for="drop1">1 - No Direction
+                                        <span class="tooltip">Third shot lacks purpose and direction, often hits hard shots into net or out</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="drop2" name="drop" value="2">
+                                    <label for="drop2">2 - Developing
+                                        <span class="tooltip">Learning third shot drops, can execute basic shots but inconsistent placement</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="drop3" name="drop" value="3">
+                                    <label for="drop3">3 - Inconsistent
+                                        <span class="tooltip">Can execute both drops and drives but struggles with consistency under pressure</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="drop4" name="drop" value="4">
+                                    <label for="drop4">4 - Effective
+                                        <span class="tooltip">Reliable third shot with good decision-making, can choose appropriate shot type</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="drop5" name="drop" value="5">
+                                    <label for="drop5">5 - Mastered
+                                        <span class="tooltip">Elite third shot with exceptional control, can execute drops and drives with precision</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Volleys -->
+                        <div class="criteria-group">
+                            <h4>6. Volleys</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="volley1" name="volley" value="1">
+                                    <label for="volley1">1 - No Control
+                                        <span class="tooltip">Struggles with basic volley mechanics, hits shots wildly without control</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="volley2" name="volley" value="2">
+                                    <label for="volley2">2 - Learning
+                                        <span class="tooltip">Developing volley skills, can execute basic shots but limited consistency</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="volley3" name="volley" value="3">
+                                    <label for="volley3">3 - Variety
+                                        <span class="tooltip">Consistent volleys with good control, can execute various shot types effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="volley4" name="volley" value="4">
+                                    <label for="volley4">4 - Blocks
+                                        <span class="tooltip">Strong volleys with ability to block hard shots and redirect with control</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="volley5" name="volley" value="5">
+                                    <label for="volley5">5 - Resets
+                                        <span class="tooltip">Elite volley skills, can reset hard shots and create offensive opportunities</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 7. Transition -->
+                        <div class="criteria-group">
+                            <h4>7. Transition / Positioning</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="trans1" name="trans" value="1">
+                                    <label for="trans1">1 - Baseline
+                                        <span class="tooltip">Stays at baseline, struggles with movement to net, poor court positioning</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="trans2" name="trans" value="2">
+                                    <label for="trans2">2 - Inconsistent
+                                        <span class="tooltip">Attempts to move to net but timing is poor, inconsistent positioning</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="trans3" name="trans" value="3">
+                                    <label for="trans3">3 - Anticipates
+                                        <span class="tooltip">Good court awareness, anticipates shots and moves to appropriate positions</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="trans4" name="trans" value="4">
+                                    <label for="trans4">4 - Comfortable
+                                        <span class="tooltip">Efficient movement around court, comfortable in all positions and transitions</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="trans5" name="trans" value="5">
+                                    <label for="trans5">5 - Master
+                                        <span class="tooltip">Elite court positioning and movement, can control space and dictate play</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 8. Strategy -->
+                        <div class="criteria-group">
+                            <h4>8. Strategy</h4>
+                            <div class="radio-tiles">
+                                <div class="radio-tile">
+                                    <input type="radio" id="strat1" name="strat" value="1">
+                                    <label for="strat1">1 - Errors
+                                        <span class="tooltip">Limited strategic understanding, makes many unforced errors, poor shot selection</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="strat2" name="strat" value="2">
+                                    <label for="strat2">2 - Basics
+                                        <span class="tooltip">Understands basic strategy, can identify opponent weaknesses but limited execution</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="strat3" name="strat" value="3">
+                                    <label for="strat3">3 - Identifies
+                                        <span class="tooltip">Good strategic awareness, can identify and exploit opponent weaknesses effectively</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="strat4" name="strat" value="4">
+                                    <label for="strat4">4 - Adapts
+                                        <span class="tooltip">Adapts strategy during matches, can change game plan based on opponent</span>
+                                    </label>
+                                </div>
+                                <div class="radio-tile">
+                                    <input type="radio" id="strat5" name="strat" value="5">
+                                    <label for="strat5">5 - Master
+                                        <span class="tooltip">Elite strategic understanding, can anticipate and adjust to opponent's strategy</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Achievements will be added here dynamically -->
+                    <div class="achievements-section">
+                        <h4>🏆 Player Achievements</h4>
+                        <p>Add tournament achievements and rankings</p>
+                        
+                        <div id="achievementsList" style="margin-bottom: 20px;">
+                            <!-- Achievements will be added here dynamically -->
+                        </div>
+                        
+                        <div class="achievement-input-group" style="display: flex; gap: 15px; align-items: end; margin-bottom: 15px;">
+                            <div style="flex: 1;">
+                                <label for="achievementTitle">Achievement Title</label>
+                                <select id="achievementTitle" style="width: 100%; padding: 10px; border: 2px solid #e8f5e9; border-radius: 8px;">
+                                    <option value="">Select Achievement</option>
+                                    <option value="Champion">🏆 Champion</option>
+                                    <option value="1st Runner Up">🥈 1st Runner Up</option>
+                                    <option value="2nd Runner Up">🥉 2nd Runner Up</option>
+                                    <option value="3rd Runner Up">🥉 3rd Runner Up</option>
+                                    <option value="Semi-Finalist">🏅 Semi-Finalist</option>
+                                    <option value="Quarter-Finalist">🏅 Quarter-Finalist</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="tournamentName">Tournament Name</label>
+                                <input type="text" id="tournamentName" placeholder="e.g., Leyte Open 2024" style="width: 100%; padding: 10px; border: 2px solid #e8f5e9; border-radius: 8px;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label for="tournamentType">Tournament Type</label>
+                                <select id="tournamentType" style="width: 100%; padding: 10px; border: 2px solid #e8f5e9; border-radius: 8px;">
+                                    <option value="minor">Minor Tournament</option>
+                                    <option value="major">Major Tournament</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button type="button" onclick="addAchievement()" class="secondary" style="padding: 10px 20px; border: none; border-radius: 8px; background: var(--primary-green); color: white; cursor: pointer;">➕ Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="saveBtn" class="primary">📝 Save Assessment</button>
+                        <button type="button" class="secondary" onclick="resetForm()">🔄 Reset Form</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal">
+        <div class="modal-content">
+            <h3>Committee Login</h3>
+            <input type="email" id="loginEmail" placeholder="Committee Email">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <div class="modal-actions">
+                <button class="secondary" onclick="window.closeLoginModal()">Cancel</button>
+                <button onclick="window.performLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Court Modal -->
+    <div id="addCourtModal">
+        <div class="modal-content">
+            <h3>Add New Court</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" id="newCourtName" placeholder="Court Name" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <select id="newCourtMunicipality" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <option value="">Select Municipality</option>
+                    <option value="Abuyog">Abuyog</option>
+                    <option value="Alangalbig">Alangalbig</option>
+                    <option value="Albuera">Albuera</option>
+                    <option value="Bato">Bato</option>
+                    <option value="Baybay City">Baybay City</option>
+                    <option value="Burauen">Burauen</option>
+                    <option value="Calubian">Calubian</option>
+                    <option value="Capoocan">Capoocan</option>
+                    <option value="Carigara">Carigara</option>
+                    <option value="Dagami">Dagami</option>
+                    <option value="Dulag">Dulag</option>
+                    <option value="Hilongos">Hilongos</option>
+                    <option value="Hindang">Hindang</option>
+                    <option value="Inopacan">Inopacan</option>
+                    <option value="Isabel">Isabel</option>
+                    <option value="Jaro">Jaro</option>
+                    <option value="Javier">Javier</option>
+                    <option value="Julita">Julita</option>
+                    <option value="Kananga">Kananga</option>
+                    <option value="La Paz">La Paz</option>
+                    <option value="Leyte">Leyte</option>
+                    <option value="MacArthur">MacArthur</option>
+                    <option value="Matalom">Matalom</option>
+                    <option value="Matag-ob">Matag-ob</option>
+                    <option value="Mayorga">Mayorga</option>
+                    <option value="Merida">Merida</option>
+                    <option value="Ormoc City">Ormoc City</option>
+                    <option value="Palompon">Palompon</option>
+                    <option value="Pastrana">Pastrana</option>
+                    <option value="San Isidro">San Isidro</option>
+                    <option value="San Miguel">San Miguel</option>
+                    <option value="Santa Fe">Santa Fe</option>
+                    <option value="Tabango">Tabango</option>
+                    <option value="Tabontabon">Tabontabon</option>
+                    <option value="Tacloban City">Tacloban City</option>
+                    <option value="Tolosa">Tolosa</option>
+                    <option value="Tunga">Tunga</option>
+                    <option value="Villaba">Villaba</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="secondary" onclick="window.closeAddCourtModal()">Cancel</button>
+                <button onclick="window.addCourt()">Add Court</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Committee Modal -->
+    <div id="registerModal">
+        <div class="modal-content">
+            <h3>Register New Committee Member</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" id="registerName" placeholder="Full Name" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <input type="email" id="registerEmail" placeholder="Email Address" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <input type="password" id="registerPassword" placeholder="Password" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <select id="registerRole" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <option value="">Select Role</option>
+                    <option value="committee">Committee Member</option>
+                    <option value="admin">Administrator</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="secondary" onclick="window.closeRegisterModal()">Cancel</button>
+                <button onclick="window.registerCommitteeMember()">Register</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

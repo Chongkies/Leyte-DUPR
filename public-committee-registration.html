@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Committee Registration - Leyte Pickleball</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .public-registration-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .registration-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .registration-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .registration-header p {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .registration-form {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            border: 2px solid var(--card-border);
+            box-shadow: var(--card-shadow);
+            backdrop-filter: var(--card-backdrop);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(133, 187, 47, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .register-btn {
+            flex: 1;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-green), #45a049);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(133, 187, 47, 0.4);
+        }
+        
+        .back-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            background: var(--gray-light);
+            color: var(--text-primary);
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, var(--primary-green), #45a049);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .terms-container {
+            margin-top: 10px;
+        }
+        
+        .terms-textbox {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .terms-textbox h4 {
+            color: var(--primary-green);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .terms-textbox p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .integrity-points {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .integrity-point {
+            padding: 15px;
+            background: white;
+            border-left: 4px solid var(--primary-green);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .integrity-point strong {
+            color: var(--primary-green);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .terms-checkbox {
+            margin-top: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .terms-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--primary-green);
+        }
+        
+        .checkbox-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            line-height: 1.5;
+        }
+        
+        .register-btn:disabled {
+            background: linear-gradient(135deg, #ccc, #999);
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .register-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        @media (max-width: 768px) {
+            .public-registration-container {
+                padding: 0 15px;
+                margin: 20px auto;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sticky Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="pickleball-green-icon-logo-free-png.png" id="logo" alt="Leyte Pickleball">
+                <h1>Public Committee Registration</h1>
+            </div>
+            <div class="header-actions">
+                <button onclick="window.location.href='assessment.html'" class="committee-btn">Assessment</button>
+                <button onclick="window.location.href='index.html'" class="committee-btn">Home</button>
+                <button id="logoutBtn" onclick="window.location.href='committee-management.html'" class="committee-btn" style="background: linear-gradient(135deg, #ff6b6b, #ff5252);">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="registration-header">
+            <h1>Public Committee Registration</h1>
+            <p>Register as a committee member with public access. Your account will require approval from an administrator before you can access committee management features.</p>
+        </div>
+
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div id="successMessage" class="success-message" style="display: none;"></div>
+
+        <div class="registration-form">
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="memberName">Full Name *</label>
+                    <input type="text" id="memberName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberEmail">Email Address *</label>
+                    <input type="email" id="memberEmail" placeholder="Enter your email address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberPassword">Password *</label>
+                    <input type="password" id="memberPassword" placeholder="Create password (min 6 characters)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberPhone">Phone Number *</label>
+                    <input type="tel" id="memberPhone" placeholder="Enter your phone number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberAddress">Address *</label>
+                    <input type="text" id="memberAddress" placeholder="Enter your full address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberMunicipality">Municipality *</label>
+                    <select id="memberMunicipality" required>
+                        <option value="">Select your municipality</option>
+                        <option value="tacloban">Tacloban City</option>
+                        <option value="abuyog">Abuyog</option>
+                        <option value="alangalang">Alangalang</option>
+                        <option value="albuera">Albuera</option>
+                        <option value="babatngon">Babatngon</option>
+                        <option value="barugo">Barugo</option>
+                        <option value="bato">Bato</option>
+                        <option value="burauen">Burauen</option>
+                        <option value="calubian">Calubian</option>
+                        <option value="capoocan">Capoocan</option>
+                        <option value="carigara">Carigara</option>
+                        <option value="dulag">Dulag</option>
+                        <option value="hilongos">Hilongos</option>
+                        <option value="hindang">Hindang</option>
+                        <option value="inopacan">Inopacan</option>
+                        <option value="isabel">Isabel</option>
+                        <option value="jaro">Jaro</option>
+                        <option value="javier">Javier</option>
+                        <option value="kananga">Kananga</option>
+                        <option value="la-paz">La Paz</option>
+                        <option value="leyte">Leyte</option>
+                        <option value="macarthur">MacArthur</option>
+                        <option value="matalom">Matalom</option>
+                        <option value="matag-ob">Matag-ob</option>
+                        <option value="matalom">Matalom</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="palo">Palo</option>
+                        <option value="palompon">Palompon</option>
+                        <option value="pastrana">Pastrana</option>
+                        <option value="san-isidro">San Isidro</option>
+                        <option value="san-miguel">San Miguel</option>
+                        <option value="santa-fe">Santa Fe</option>
+                        <option value="tabango">Tabango</option>
+                        <option value="tabontabon">Tabontabon</option>
+                        <option value="tanauan">Tanauan</option>
+                        <option value="tolosa">Tolosa</option>
+                        <option value="tunga">Tunga</option>
+                        <option value="vilaba">Vilaba</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="termsAndConditions">Committee Code of Integrity *</label>
+                    <div class="terms-container">
+                        <div class="terms-textbox">
+                            <h4>📋 Committee Code of Integrity</h4>
+                            <p>I, the undersigned, hereby commit to the following principles as a certified Committee Member of the Leyte Pickleball League:</p>
+                            
+                            <div class="integrity-points">
+                                <div class="integrity-point">
+                                    <strong>🎯 Unbiased Assessment:</strong> I will evaluate every player based strictly on the established USAP/DUPR criteria, regardless of personal affiliation, team loyalty, or hometown.
+                                </div>
+                                
+                                <div class="integrity-point">
+                                    <strong>⚖️ Anti-Sandbagging Policy:</strong> I understand that intentionally under-rating a high-skill player is a violation of league trust. I will not manipulate scores to provide any player or team an unfair advantage in tournament brackets.
+                                </div>
+                                
+                                <div class="integrity-point">
+                                    <strong>🔐 Professional Accountability:</strong> I accept that my name is permanently linked to every assessment I submit. If a pattern of inaccurate or dishonest rating is discovered, I will be held responsible and my Committee privileges will be revoked.
+                                </div>
+                                
+                                <div class="integrity-point">
+                                    <strong>📊 Data Stewardship:</strong> I will treat player information with respect and ensure that the digital record remains a true reflection of our community's growth.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <label for="agreeTerms" class="checkbox-label">
+                            I have read the Code of Integrity and agree to be held accountable for my assessments.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="registerBtn" class="register-btn" disabled>🌐 Register as Committee Member</button>
+                    <button type="button" onclick="window.location.href='index.html'" class="back-btn">← Back to Home</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="public-committee-registration.js"></script>
+</body>
+</html>

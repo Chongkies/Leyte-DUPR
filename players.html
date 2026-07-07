@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leyte Pickleball - Player Management</title>
+    <link rel="icon" type="image/png" href="pickleball-green-icon-logo-free-png.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Sticky Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="pickleball-green-icon-logo-free-png.png" id="logo" alt="Leyte Pickleball">
+                <h1>Leyte Pickleball Player Management</h1>
+            </div>
+            <div class="header-actions">
+                <button onclick="window.location.href='index.html'" class="committee-btn">← Back to Directory</button>
+                <button onclick="window.location.href='assessment.html'" class="committee-btn">Assessment Form</button>
+                <button id="logoutBtn" onclick="logout()" class="committee-btn logout-btn" style="display:none;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Glassmorphism Filter Bar -->
+    <div class="filter-section">
+        <div class="filter-glass">
+            <input type="text" id="searchBar" placeholder="Search players or courts...">
+            <select id="locationFilter">
+                <option value="All">All Locations</option>
+                <option value="Abuyog">Abuyog</option>
+                <option value="Alangalbig">Alangalbig</option>
+                <option value="Albuera">Albuera</option>
+                <option value="Bato">Bato</option>
+                <option value="Baybay City">Baybay City</option>
+                <option value="Burauen">Burauen</option>
+                <option value="Calubian">Calubian</option>
+                <option value="Capoocan">Capoocan</option>
+                <option value="Carigara">Carigara</option>
+                <option value="Dagami">Dagami</option>
+                <option value="Dulag">Dulag</option>
+                <option value="Hilongos">Hilongos</option>
+                <option value="Hindang">Hindang</option>
+                <option value="Inopacan">Inopacan</option>
+                <option value="Isabel">Isabel</option>
+                <option value="Jaro">Jaro</option>
+                <option value="Javier">Javier</option>
+                <option value="Julita">Julita</option>
+                <option value="Kananga">Kananga</option>
+                <option value="La Paz">La Paz</option>
+                <option value="Leyte">Leyte</option>
+                <option value="MacArthur">MacArthur</option>
+                <option value="Matalom">Matalom</option>
+                <option value="Matag-ob">Matag-ob</option>
+                <option value="Mayorga">Mayorga</option>
+                <option value="Merida">Merida</option>
+                <option value="Ormoc City">Ormoc City</option>
+                <option value="Palompon">Palompon</option>
+                <option value="Pastrana">Pastrana</option>
+                <option value="San Isidro">San Isidro</option>
+                <option value="San Miguel">San Miguel</option>
+                <option value="Santa Fe">Santa Fe</option>
+                <option value="Tabango">Tabango</option>
+                <option value="Tabontabon">Tabontabon</option>
+                <option value="Tacloban City">Tacloban City</option>
+                <option value="Tolosa">Tolosa</option>
+                <option value="Tunga">Tunga</option>
+                <option value="Villaba">Villaba</option>
+                
+                <!-- Court Locations -->
+                <optgroup label="Inopacan">
+                    <option value="VC Sports Complex">VC Sports Complex</option>
+                    <option value="Jyn's Hotel">Jyn's Hotel</option>
+                </optgroup>
+                
+                <optgroup label="Hindang">
+                    <option value="DDN">DDN</option>
+                    <option value="Hindang Gym">Hindang Gym</option>
+                </optgroup>
+                
+                <optgroup label="Hilongos">
+                    <option value="Galingan">Galingan</option>
+                    <option value="BMVL">BMVL</option>
+                    <option value="Himoaw">Himoaw</option>
+                </optgroup>
+                
+                <optgroup label="Bato">
+                    <option value="Combado">Combado</option>
+                    <option value="Tito Vics">Tito Vics</option>
+                    <option value="002">002</option>
+                    <option value="Tabunok">Tabunok</option>
+                </optgroup>
+                
+                <optgroup label="Matalom">
+                    <option value="Matalom Town Proper">Matalom Town Proper</option>
+                </optgroup>
+            </select>
+            <select id="courtFilter">
+                <option value="All">All Courts</option>
+                <!-- Courts will be loaded dynamically here -->
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Players Management Section -->
+        <div id="playersManagement">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Player Management</h2>
+                <button onclick="loadPlayersList()" class="committee-btn" style="margin-bottom: 10px;">🔄 Refresh Players</button>
+            </div>
+            
+            <!-- Players List Section -->
+            <div id="playersListSection" style="margin-bottom: 20px;">
+                <div id="playersList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                    <!-- Players will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal">
+        <div class="modal-content">
+            <h3>Committee Login</h3>
+            <input type="email" id="loginEmail" placeholder="Committee Email">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <div class="modal-actions">
+                <button class="secondary" onclick="closeLoginModal()">Cancel</button>
+                <button onclick="performLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="players.js"></script>
+</body>
+</html>
